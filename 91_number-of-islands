@@ -1,0 +1,47 @@
+// https://leetcode.com/problems/number-of-islands/description/
+
+class Solution {
+public:
+    int m , n ;
+    
+    vector<vector<int>> dir = {
+                {0,1} ,
+        {-1,0}  ,       {1 , 0} ,
+                {0,-1}
+    } ;
+    void dfs(int i , int j , vector<vector<char>>& grid)
+    {
+        if(i >= m || i < 0 || j >= n || j < 0 || grid[i][j] == '0')
+        {
+            return ;
+        }
+
+        grid[i][j] = '0' ;
+
+        for(int d = 0 ; d < 4 ; ++d)
+        {
+            int x_i = i + dir[d][0] ;
+            int x_j = j + dir[d][1] ;
+            dfs(x_i , x_j , grid) ;
+        }
+    }
+    int numIslands(vector<vector<char>>& grid) {
+        m = grid.size() ;
+        n = grid[0].size() ;
+
+        int count = 0 ;
+
+        for(int i = 0 ; i < m ; ++i)
+        {
+            for(int j = 0 ; j < n ; ++j)
+            {
+                if(grid[i][j] == '1')
+                {
+                    dfs(i , j , grid) ;
+                    count++ ;
+                }
+            }
+        }
+        return count ;
+    }
+};
