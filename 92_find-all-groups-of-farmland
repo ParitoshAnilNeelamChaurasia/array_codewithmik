@@ -1,0 +1,44 @@
+// https://leetcode.com/problems/find-all-groups-of-farmland/
+
+class Solution {
+public:
+    int m, n;
+    vector<vector<int>> ans; 
+
+    
+    void dfs(int i, int j, vector<vector<int>>& land, int& x1, int& y1, int& x2, int& y2) {
+
+        if (i >= m || i < 0 || j >= n || j < 0 || land[i][j] == 0) {
+            return;
+        }
+
+        // Mark this cell as visited (set it to 0)
+        land[i][j] = 0;
+
+        // Update the bottom-right coordinates of the farmland
+        x2 = max(x2, i);
+        y2 = max(y2, j);
+
+        dfs(i + 1, j, land, x1, y1, x2, y2); // Down
+        dfs(i, j + 1, land, x1, y1, x2, y2); // Right
+        dfs(i - 1, j, land, x1, y1, x2, y2); // Up
+        dfs(i, j - 1, land, x1, y1, x2, y2); // Left
+    }
+
+    vector<vector<int>> findFarmland(vector<vector<int>>& land) {
+        m = land.size();
+        n = land[0].size();
+
+        for (int i = 0; i < m; ++i) {
+            for (int j = 0; j < n; ++j) {
+                // Start DFS when a '1' (farmland) is found
+                if (land[i][j] == 1) {
+                    int x1 = i, y1 = j, x2 = i, y2 = j; // Starting and ending coordinates of the farmland
+                    dfs(i, j, land, x1, y1, x2, y2);
+                    ans.push_back({x1, y1, x2, y2}); // Store the top-left and bottom-right coordinates of the farmland
+                }
+            }
+        }
+        return ans;
+    }
+};
