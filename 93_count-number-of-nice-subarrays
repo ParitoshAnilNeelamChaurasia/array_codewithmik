@@ -1,0 +1,34 @@
+// https://leetcode.com/problems/count-number-of-nice-subarrays/
+
+class Solution {
+public:
+    int numberOfSubarrays(vector<int>& nums, int k) {
+        int n = nums.size() ;
+
+        unordered_map<int,int> mp ;
+
+        int res = 0 ;
+        int odd_count = 0 ;
+
+        mp[odd_count] = 1 ;
+
+        for(int i = 0 ; i < n ; ++i)
+        {
+            if(nums[i] % 2 != 0)
+            {
+                odd_count += 1 ;
+            }
+            else
+            {
+                odd_count = odd_count ;
+            }
+
+            if(mp.count(odd_count - k) == true)
+            {
+                res += mp[odd_count-k] ;
+            }
+            mp[odd_count]++ ;
+        }
+        return res ;
+    }
+};
